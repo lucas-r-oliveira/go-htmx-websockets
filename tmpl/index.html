@@ -18,6 +18,7 @@
 		hx-post="/send-message" 
 		hx-target="#messages-container"
 		hx-swap="beforeend"
+		hx-on::after-request="this.reset()"
 	>
 		<label for="text-area">New message</label>
 		<textarea 
