@@ -4,8 +4,34 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Chat app</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://unpkg.com/htmx.org@1.9.6" integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni" crossorigin="anonymous"></script>
+
+
 </head>
 <body>
-	<h1>Hello template world</h1>
+	<h1 class="text-xl">Hello template world</h1>
+
+	<div id="messages-container"></div>
+
+	<form class="p-2 flex gap-y-2 flex-col" 
+		hx-post="/send-message" 
+		hx-target="#messages-container"
+		hx-swap="beforeend"
+	>
+		<label for="text-area">New message</label>
+		<textarea 
+			id="text-area" 
+			placeholder="Send text message..."
+			rows="4"
+			aria-multiline="true"
+			class="block p-2.5 w-full text-sm rounded-lg border border-gray-300"
+			name="message"
+		></textarea> 
+		<button 
+			class="p-2.5 rounded-md border border-gray-300 hover:bg-gray-100 self-end"
+			type="submit"
+		>Send</button>
+	</form>
 </body>
 </html>
