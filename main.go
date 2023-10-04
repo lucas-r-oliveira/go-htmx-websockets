@@ -5,7 +5,14 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"time"
 )
+
+type Message struct {
+	Text                string
+	Timestamp           time.Time
+	TimestampDisplayStr string
+}
 
 var templates = template.Must(template.ParseGlob("tmpl/*.html"))
 
@@ -19,9 +26,20 @@ func homeHandler(w http.ResponseWriter, r *http.Request) {
 
 func newMessageHandler(w http.ResponseWriter, r *http.Request) {
 	// the message will come as form data
-	fmt.Printf("Form data: %#v\n", r.FormValue("message"))
-	t, _ := template.New("message").Parse(`<p>{{.}}</p>`)
-	_ = t.Execute(w, r.FormValue("message"))
+	now := time.Now()
+	message := &Message{
+		Text:                r.FormValue("message"),
+		Timestamp:           now,
+		TimestampDisplayStr: fmt.Sprintf("%02d:%02d", now.Hour(), now.Minute()),
+	}
+
+	t, _ := template.New("message").Parse(`
+		<div>
+			{{.Text}}@{{.TimestampDisplayStr}}
+		</div>
+	`) //TODO: err handle
+	_ = t.Execute(w, message) //TODO: err handle
+
 }
 
 func main() {
